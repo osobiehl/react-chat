@@ -1,0 +1,37 @@
+.thing{
+    --cultured: #f2f2f2ff;
+    --alabaster: #f2efe4ff;
+    --gray-x-11-gray: #bdbdbdff;
+    --gray-web: #808080ff;
+    --davys-grey: #4f4f4fff;
+    --go-green: #27ae60ff;
+    --red-salsa: #e24c51ff;
+    --yellow-orange: #ffaf52ff;
+}
+
+
+
+.bg-egshell{
+    background-color: rgba(242,239,228,1)
+}
+
+body{
+    background-color: rgba(242,239,228,1);
+    font-family: Nunito,sans-serif;
+}
+.font-body{
+    font-family: Nunito,sans-serif;
+}
+.green-label{
+    color: #03ac13
+}
+.clubhouse-form{
+    background-color: white;
+    border-radius: 10px;
+
+}
+.clubhouse-btn{
+    border-radius: 30px;
+    background: #069414;
+}
+
