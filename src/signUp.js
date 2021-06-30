@@ -7,6 +7,9 @@ import './assets/css/room.css'
 import './assets/css/signup.css'
 import axios from 'axios'
 import React from 'react'
+import Dashboard from'./Dashboard.js'
+
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,51 +25,80 @@ let my_number='+37069848486'
 my_number = jose_num;
 
 
-async function sendSecondRequest(phone_number, sms_code, password){
-  let query_string =   link + '/api/account?' + ( `phone_number=${encodeURIComponent(phone_number)}&sms_code=${encodeURIComponent(sms_code)}&new_password=${encodeURIComponent(password)}` )
-  console.log(query_string)
-  try{
+// async function sendSecondRequest(phone_number, sms_code, password){
+//   let query_string =   link + '/api/account?' + ( `phone_number=${encodeURIComponent(phone_number)}&sms_code=${encodeURIComponent(sms_code)}&new_password=${encodeURIComponent(password)}` )
+//   console.log(query_string)
+//   try{
     
-    let response  = await axios.post(query_string)
-    console.log(response.data)
-  }
-  catch(error){
-    console.log(error.response.data)
-  }
+//     let response  = await axios.post(query_string)
+//     console.log(response.data)
+//   }
+//   catch(error){
+//     console.log(error.response.data)
+//   }
 
-} 
+// } 
 
-async function sendRequest(e){
-  alert(e)
-  e.preventDefault();
+// async function sendRequest(e){
+//   alert(e)
+//   e.preventDefault();
 
-  console.log("CALLING ONCE")
-  try{
+//   console.log("CALLING ONCE")
+//   try{
 
 
-  let response = await axios.post(link + endpoint + my_number, {})
-  console.log("GOT RESPONSE!")
+//   let response = await axios.post(link + endpoint + my_number, {})
+//   console.log("GOT RESPONSE!")
 
-  console.log(response.data)
+//   console.log(response.data)
 
-  var sms_code = window.prompt("Enter sms");
-  var password = window.prompt("enter password")
-  await sendSecondRequest(my_number, sms_code, password )
+//   var sms_code = window.prompt("Enter sms");
+//   var password = window.prompt("enter password")
+//   await sendSecondRequest(my_number, sms_code, password )
   
-}
-  catch(err){
-    console.log(err.response.data)
-  }
-}
+// }
+//   catch(err){
+//     console.log(err.response.data)
+//   }
+// }
 
 
 
 
 export default class SignUp extends React.Component{
-  constructor(props){
-    super(props)
-  }
+    constructor(props){
+      super(props);
+      this.state = {
+        phoneNumber: '',
+        password: '',
+        repeatPassword: '',
+        failure: ''
   
+      };
+      ['handleChange', 'handleSubmit', 'setFailure'].forEach(method => {this[method] = this[method].bind(this)}); 
+    }
+
+    handleChange(e){
+      e.preventDefault();
+      this.setState((prevstate) => ({...prevstate, [e.target.id]:  e.target.value}  )  )
+      console.log(this.state)
+    }
+    setFailure(msg){
+      this.setState((prevState)=>({...prevState, failure: msg}))
+    }
+    handleSubmit(e){
+      e.preventDefault();
+      let password = this.state.password;
+      let pass2 = this.state.repeatPassword;
+      if (password !== pass2) {
+        this.setFailure('error: passwords do not match!')
+      }
+      else{
+      alert('not doing anything for now since we wait to see how it will be fixed')
+      }
+
+
+    }
   
   render(){
     return (
@@ -74,26 +106,21 @@ export default class SignUp extends React.Component{
         {/* Required meta tags */}
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Normalize css*/} 
-        <link href="./normalize.css" rel="stylesheet" />
-        {/* Bootstrap CSS */}
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossOrigin="anonymous" />
-        <link href="./clubhouse.css" rel="stylesheet" />
-        <link href="./signup.css" rel="stylesheet" />
-        <title>Hello, world!</title>
+        <title>Sign up</title>
+        <Dashboard pageName={"Sign Up"} username={"person mcPerson"} followers={111}></Dashboard>
         <div className="container__child signup__form">
-          <form onSubmit={ sendRequest }>
+          <form onSubmit={ this.handleSubmit }>
             <div className="form-group">
               <label htmlFor="Phone-number">Phone number</label>
-              <input className="form-control" type="text" name="Phone-number" id="Phone-number" placeholder="eg. 1625148943" required />
+              <input className="form-control" type="text" name="Phone-number" id="phoneNumber" onChange={this.handleChange}  placeholder="eg. 1625148943" required />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input className="form-control" type="password" name="password" id="password" placeholder="********" required />
+              <input className="form-control" type="password" name="password" id="password" onChange={this.handleChange}  placeholder="********" required />
             </div>
             <div className="form-group">
               <label htmlFor="passwordRepeat">Repeat Password</label>
-              <input className="form-control" type="password" name="passwordRepeat" id="passwordRepeat" placeholder="********" required />
+              <input className="form-control" type="password" name="passwordRepeat" id="repeatPassword" onChange={this.handleChange}  placeholder="********" required />
             </div>
             <div className="m-t-lg">
               <ul className="list-inline">
@@ -105,6 +132,9 @@ export default class SignUp extends React.Component{
                 </li>
               </ul>
             </div>
+            <div className="login-error">
+                    {this.state.failure}
+              </div>
           </form>  
         </div>
         {/* Optional JavaScript; choose one of the two! */}

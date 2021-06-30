@@ -5,6 +5,7 @@ import 'bootstrap/dist/js/bootstrap.min.js'
 import  './assets/css/index.css'
 import './assets/css/room.css'
 import './assets/css/signup.css'
+import Dashboard from'./Dashboard.js'
 import axios from 'axios'
 import React, {useState} from 'react'
 import {
@@ -28,6 +29,8 @@ async function sendLoginRequest(){
   }
   catch(err){
     console.log(err)
+
+
     if (err.response)
     console.log(err.response.data)
   }
@@ -38,7 +41,41 @@ async function sendLoginRequest(){
 export default class Login extends React.Component{
   constructor(props){
     super(props);
-    sendLoginRequest();
+    this.state = {
+      username: '',
+      password: '',
+      failure: '',
+
+    };
+    ['handleChange', 'submit'].forEach(method => {this[method] = this[method].bind(this)}); 
+  }
+  componentWillMount(){
+    
+  }
+  handleChange(e){
+    e.preventDefault();
+    this.setState((prevstate) => ({...prevstate, [e.target.id]:  e.target.value}  )  )
+    console.log(this.state)
+  }
+  async submit(e){
+    console.log('submitting')
+    e.preventDefault();
+    let link = "https://clubtext.chat/api/authenticate/" 
+    let password= this.state.password;
+    let userId= this.state.username;
+    console.log("CALLING ONCE")
+    try{
+      let query_string = `${link}${userId}?password=${encodeURIComponent(password)}`
+      let response = await axios.post(query_string)
+      console.log(response.data)
+    }
+    catch(err){
+      console.log(err)
+      this.setState((prevstate) => ({...prevstate, failure:  'error: incorrect username or password, please try again'}  )  )
+      if (err.response)
+      console.log(err.response.data)
+    }
+
   }
 
 
@@ -51,34 +88,30 @@ export default class Login extends React.Component{
               {/* Required meta tags */}
               <meta charSet="utf-8" />
               <meta name="viewport" content="width=device-width, initial-scale=1" />
-              <title>Hello, world!</title>
-              <nav className="navbar navbar-expand-sm navbar-light bg-light">
-                <a className="navbar-brand" href="#">Kino Club</a>
-                <ul className="nav navbar-nav m-auto">
-                  <li>
-                    <h2>Sign in</h2>
-                  </li>
-                </ul>
-              </nav>
+              <title>Log in</title>
+              <Dashboard pageName={"Dashboard"} username={"person mcPerson"} followers={111}></Dashboard>
               <div className="container__child signup__form">
-                <form action="#">
+                <form action="#" onSubmit={this.submit}>
                   <div className="form-group">
                     <label htmlFor="Phone-number">Clubhouse Username</label>
-                    <input className="form-control" type="text" name="Phone-number" id="Phone-number" placeholder required />
+                    <input className="form-control" type="text" name="Phone-number" id="username" onChange={this.handleChange} placeholder="" required={true} />
                   </div>
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input className="form-control" type="password" name="password" id="password" required />
+                    <input className="form-control" type="password" name="password" id="password" onChange={this.handleChange}  required={true} />
                   </div>
                   <div className="m-t-lg">
                     <ul className="list-inline">
                       <li>
-                        <input className="btn btn--form clubhouse-btn" type="submit" defaultValue="Sign in" />
+                        <input className="btn btn--form clubhouse-btn signup-btn" style={{color: 'black'}} type="submit" defaultValue="Sign in" />
                       </li>
                       <li>
-                        <a className="signup__link" href="#">Sign up</a>
+                        <a className="signup_link" href="#">Sign up</a>
                       </li>
                     </ul>
+                  </div>
+                  <div className="login-error">
+                    {this.state.failure}
                   </div>
                 </form>  
               </div>

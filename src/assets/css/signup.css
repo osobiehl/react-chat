@@ -34,8 +34,8 @@ a,
   width: 50%;
   min-width: 320px;
   height: 100%;
-  color: #fff;
   border-radius: 15px;
+  margin: 0 auto;
 }
 .signup__thumbnail {
   position: relative;
@@ -63,11 +63,7 @@ a,
   vertical-align: bottom;
 }
 .thumbnail__content {align-self: center;}
-h1,
-h2 {
-  font-weight: 300;
-  color: rgba(255,255,255,1);
-}
+
 .heading--primary {font-size: 1.999rem;}
 .heading--secondary {font-size: 1.414rem;}
 .thumbnail__links {
@@ -104,10 +100,10 @@ label {
   font-size: .95rem;
   font-weight: 600;
   text-transform: uppercase;
-  color: #fff;
+  /* color: #fff; */
   border-radius: remy(35px);
   &:focus,
-  &:hover {background: lighten(#111, 13%);}
+  &:hover {background-color: lighten(#fafafa, 13%);}
 }
 .signup__link {
   font-size: 1.0rem;
@@ -127,6 +123,18 @@ ul.list-inline{
     
 }
 
+.signup-btn:hover{
+  border: 1px solid;
+}
+.login-error{
+  background-color: var(--red-salsa);
+  color: white;
+  border-radius: 15px;
+  text-align: center;
+  transition: all .25s ease-in;
+
+
+}
 @media only screen and (max-width: 600px) {
 
     ul.list-inline{
